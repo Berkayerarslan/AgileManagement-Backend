@@ -18,13 +18,17 @@ namespace Agile.Management.Domain.models
         public string ProfilePictureUrl { get; private set; }
         public bool EmailVerified { get; private set; }
         public string ProfPictureUrl { get; private set; }
+        public string RefreshToken { get; set; }
 
         public ApplicationUser(string email)
         {
           SetName(email);
           SetEmail(email);
         }
-
+        public void SetRefreshToken(string refreshToken)
+        {
+            this.RefreshToken = refreshToken;
+        }
         public void SetName(string name)
         {
             if (string.IsNullOrEmpty(name))

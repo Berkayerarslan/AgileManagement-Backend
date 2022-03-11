@@ -26,7 +26,7 @@ namespace Agile.Management.Domain.handlers
         public void Handle(UserCreatedEvent @event)
         {
             string activationLink = "http://localhost:3000/VerifyMail/" + @event.UserId;
-            _emailService.SendSingleEmailAsync(@event.Email, $"Email onayı", $"<p> Emaili onaylamak için <a href='{activationLink}&accepted=true'> Tıklaynız <a/></p>");
+            _emailService.SendSingleEmailAsync(@event.Email, $"Email onayı", $"<p> Emaili onaylamak için <a href='{activationLink}'> Tıklaynız <a/></p>");
         }
 
       

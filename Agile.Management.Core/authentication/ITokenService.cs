@@ -13,7 +13,7 @@ namespace AgileManagement.Application.services
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
         public int ExpireDateSeconds { get; set; } = 3600;
-        public string TokenType { get; set; } = "Bearer";
+        
     }
     public interface ITokenService
     {
@@ -22,5 +22,6 @@ namespace AgileManagement.Application.services
         /// </summary>
         /// <returns></returns>
         Task<TokenResponse> GenerateToken(IEnumerable<Claim> Claims);
+        //Task<IEnumerable<Claim>> ValidateAccessTokenAsync(string accessToken);
     }
 }

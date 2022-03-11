@@ -3,7 +3,6 @@ using Agile.Management.infrastructure;
 using AgileManagement.Application;
 using AgileManagement.Application.services;
 using AgileManagement.Persistence.EF;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,17 +34,13 @@ namespace Agile.Management.Api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddHttpContextAccessor();
 
 
-            // burasý çok önemli sakýn singleton yapmayalým.
-
-            DomainModules.Load(services);
-            ApplicationModule.Load(services);
-            EFModules.Load(services, Configuration);
-            InfrastructureModule.Load(services);
-
-
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Agile.Management.Api", Version = "v1" });
+            });
             services.AddCors(opt =>
             {
                 opt.AddDefaultPolicy(policy =>
@@ -57,37 +52,11 @@ namespace Agile.Management.Api
                     //policy.WithHeaders("x-token"); // Application/json appliation/xml
                 });
             });
-
-            //services.AddAuthentication("adminScheme").AddJwtBearer()
-          
-
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Agile.Management.Api", Version = "v1" });
-            });
-
-
-
-
-
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
-            //{
-            //    opt.SaveToken = true;// token sessionda tutumamýzý saðlar
-            //    //opt.Audience = Configuration["JWT:audience"];
-
-            //    opt.TokenValidationParameters = new TokenValidationParameters()
-            //    {
-            //        ValidateAudience = true, // yanlýþ audince gönderirse token kabul etme
-            //        ValidateIssuer = true, // access tokendan yanlýþ issuer gelirse validate etme
-            //        ValidateIssuerSigningKey = true, // çok önemli signkey validate etmemiz lazým
-            //        ValidateLifetime = true, // token yaþam süresini kontrol et
-            //        ValidIssuer = Configuration["JWT:issuer"], // valid issuer deðeri
-            //        ValidAudience = Configuration["JWT:audience"], // valid audience deðeri
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:signingKey"])),
-
-            //    };
-            //});
+        
+            ApplicationModule.Load(services);
+            InfrastructureModule.Load(services, Configuration);
+            EFModules.Load(services, Configuration);
+            DomainModules.Load(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

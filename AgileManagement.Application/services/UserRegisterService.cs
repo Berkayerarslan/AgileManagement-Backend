@@ -35,6 +35,7 @@ namespace AgileManagement.Application.services
                     };
                 }
                 var user = new ApplicationUser(request.Email);
+                user.SetProfileInfo(request.FirstName, request.LastName, "");
                 user.SetEmail(request.Email);
                 user.SetPasswordHash(CustomPasswordHashService.HashPassword(request.Password));
                 _userRepository.Add(user);
